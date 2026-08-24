@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VulcanOS / Wiki</title>
+
+
+
+    <style>
+        :root {
+            --outer-bg: #000000;
+            --page-bg: #0d1117;
+            --toc-bg: #161b22;
+            --code-bg: #161b22;
+            --text: #c9d1d9;
+            --heading: #f0f3f6;
+            --muted: #8b949e;
+            --border: #30363d;
+            --red: #ff3b3b;
+            --link: #58a6ff;
+            --link-hover: #79c0ff;
+            --button-bg: #21262d;
+            --page-width: 915px;
+        }
+
+        body.light {
+            --outer-bg: #e6e6e6;
+            --page-bg: #ffffff;
+            --toc-bg: #f6f8fa;
+            --code-bg: #f6f8fa;
+            --text: #24292f;
+            --heading: #1f2328;
+            --muted: #57606a;
+            --border: #d0d7de;
+            --red: #d1242f;
+            --link: #0969da;
+            --link-hover: #0550ae;
+            --button-bg: #f6f8fa;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            background: var(--outer-bg);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+            transition: background 0.15s ease, color 0.15s ease;
+        }
+
+        a {
+            color: var(--link);
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: var(--link-hover);
+            text-decoration: underline;
+        }
+
+        .page {
+            width: var(--page-width);
+            max-width: calc(100% - 32px);
+            min-height: 100vh;
+            margin: 0 auto;
+            background: var(--page-bg);
+            padding: 40px 34px 80px;
+            transition: background 0.15s ease;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--red);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--heading);
+        }
+
+        .logo svg {
+            width: 27px;
+            height: 27px;
+        }
+
+        .title {
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 30px;
+            color: var(--heading);
+            letter-spacing: -0.5px;
+        }
+
+        .title span {
+            color: var(--muted);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            white-space: nowrap;
+        }
+
+        .header-actions a,
+        .theme-button {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .theme-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 6px 11px;
+            background: var(--button-bg);
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 15px;
+        }
+
+        .theme-button:hover {
+            filter: brightness(1.15);
+        }
+
+        .theme-button svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .toc {
+            width: 280px;
+            margin-top: 35px;
+            padding: 14px 18px;
+            background: var(--toc-bg);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+        }
+
+        .toc-title {
+            margin-bottom: 8px;
+            color: var(--heading);
+            font-weight: 600;
+            font-size: 17px;
+        }
+
+        .toc ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .toc li {
+            margin: 3px 0;
+            padding-left: 1px;
+        }
+
+        .toc a {
+            font-size: 17px;
+        }
+
+        main {
+            margin-top: 68px;
+        }
+
+        section {
+            margin-bottom: 34px;
+            scroll-margin-top: 25px;
+        }
+
+        h2 {
+            margin: 0 0 15px;
+            padding-bottom: 7px;
+            border-bottom: 1px solid var(--border);
+            color: var(--heading);
+            font-size: 25px;
+            line-height: 1.3;
+            font-weight: 700;
+        }
+
+        h3 {
+            margin-top: 25px;
+            color: var(--heading);
+            font-size: 19px;
+        }
+
+        p {
+            margin: 12px 0;
+            color: var(--text);
+            font-size: 17px;
+        }
+
+        ul,
+        ol {
+            font-size: 17px;
+            padding-left: 25px;
+        }
+
+        li {
+            margin: 4px 0;
+        }
+
+        code {
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 0.9em;
+        }
+
+        p code,
+        li code {
+            padding: 2px 5px;
+            background: var(--button-bg);
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            color: var(--text);
+        }
+
+        pre {
+            margin: 16px 0;
+            padding: 14px;
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+
+        pre code {
+            color: var(--text);
+            font-size: 14px;
+            line-height: 1.55;
+        }
+
+        .choices {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 16px 0;
+        }
+
+        .choice {
+            padding: 7px 13px;
+            background: var(--button-bg);
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            font-family: inherit;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .choice:hover {
+            filter: brightness(1.15);
+        }
+
+        .choice.active {
+            border-color: var(--link);
+        }
+
+        .notice {
+            margin: 18px 0;
+            padding: 12px 15px;
+            background: var(--toc-bg);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--red);
+            border-radius: 4px;
+        }
+
+        footer {
+            margin-top: 70px;
+            padding-top: 18px;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 700px) {
+            .page {
+                max-width: 100%;
+                width: 100%;
+                padding: 22px 18px 60px;
+            }
+
+            header {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .header-actions {
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+
+            .title {
+                font-size: 24px;
+            }
+
+            .toc {
+                width: 100%;
+            }
+
+            main {
+                margin-top: 45px;
+            }
+
+            h2 {
+                font-size: 22px;
+            }
+
+            p {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <header>
+        <div class="brand">
+            <div class="logo">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 20h18"/>
+                    <path d="M5 20l4-10 3 4 2-7 5 13"/>
+                    <path d="M12 7c0-1.5 1-2.5 1-4"/>
+                </svg>
+            </div>
+
+            <div class="title">
+                VulcanOS <span>/ wiki</span>
+            </div>
+        </div>
+
+        <nav class="header-actions">
+            <button class="theme-button" onclick="toggleTheme()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="4"/>
+                    <path d="M12 2v2"/>
+                    <path d="M12 20v2"/>
+                    <path d="M4.93 4.93l1.41 1.41"/>
+                    <path d="M17.66 17.66l1.41 1.41"/>
+                    <path d="M2 12h2"/>
+                    <path d="M20 12h2"/>
+                    <path d="M4.93 19.07l1.41-1.41"/>
+                    <path d="M17.66 6.34l1.41-1.41"/>
+                </svg>
+                <span>Light</span>
+            </button>
+
+           <a href="https://discord.gg/B2KFTCASUw">Discord</a>
+           <a href="iso.html">Grab the ISO</a>
+        </nav>
+    </header>
+
+    <nav class="toc">
+        <div class="toc-title">Table of contents</div>
+
+        <ol>
+            <li><a href="#Introduction">Introduction</a></li>
+            <li><a href="#Installation">Installation</a></li>
+            <li><a href="#Bootstrapd">Bootstrapd</a></li>
+            <li><a href="#Development">Development</a></li>
+            <li><a href="#History">History</a></li>
+            <li><a href="#Credits">Credits</a></li>
+        </ol>
+    </nav>
+
+    <main>
+
+        <section id="thing-1">
+            <h2>1. Introduction</h2>
+
+            <p>
+                Hello and Welcome to the VulcanOS official website made by dudas131! In this website we will include things such as:
+                 <br><br>
+                - The Installation Process
+                 <br><br>
+                - The Development Process
+                 <br><br>
+                - Credits
+                 <br><br>
+                - Among other details.
+        </section>
+
+        <section id="Installation">
+            <h2>2. Installation</h2>
+
+            <p>
+                This is the updated guide for the VulcanOS installation process, which may be updated in the future due to possible changes and updates to the OS, please open an issue if this guide doesn't work.
+            </p>
+
+            <p>
+                First things first, put the ISO onto a spare flash drive. Plug the flash drive into the PC, boot the PC, and press the appropriate key to enter the BIOS/UEFI. The key varies depending on the manufacturer of your PC or motherboard. Once you're in the BIOS/UEFI, set the USB drive as the primary boot device and reboot the PC.
+            </p>
+
+            <p>
+    After that, wait for your machine to boot. When you reach the command line, type:
+            </p>
+
+            <pre><code>bootstrapd</code></pre>
+
+            <p>
+    After entering the command, wait for the daemon to load. Once it loads, select your init and then your DE (Desktop Environment).
+            </p>
+
+            <p>
+    After completing the setup, reboot your PC. Your machine should then boot into your selected graphical user interface.
+            </p>
+        </section>
+        <section id="Bootstrapd">
+        <h2>3. Bootstrapd</h2>
+
+        <p>
+            Bootstrapd is a service provided by the operating system during and after installation that allows the user to choose which DE/WM and init system they want to use for their OS.
+            <br><br>
+            The DEs currently supported are KDE and XFCE4, while Hyprland and other DEs/WMs will be supported in the future.
+            <br><br>
+            As for init systems, the currently available options are SystemD, OpenRC, runit, and SysVinit.
+        </p>
+
+<section id="Development"> <h2>4. Development</h2>
+<h3>Main Development Focus</h3>
+
+<p>
+    The current development focus for VulcanOS is expanding compatibility and support across the system. This includes adding support for more desktop environments (DEs) and init systems, while also working toward broader application support and improved system security.
+</p>
+
+<p>
+    In the far future, VulcanOS aims to develop its own desktop environment and init system, giving the project greater control over the user experience and core system components.
+</p>
+
+<h3>Development Goals</h3>
+
+<ul>
+    <li>Expand support for additional desktop environments and init systems.</li>
+    <li>Improve application compatibility and support.</li>
+    <li>Strengthen security through kernel randomization, memory protection, cryptography, and other randomization techniques.</li>
+    <li>Long-term: develop a native VulcanOS desktop environment and init system.</li>
+</ul>
+
+</section> <section id="thing-5">
+
+        <section id="History">
+            <h2>5. History</h2>
+
+<p>
+    VulcanOS began on January 21st, when <strong>dudas131</strong>, tired of working on Python development, decided to explore operating system development instead.
+</p>
+
+<h3>The Early Names</h3>
+
+<p>
+    The project was originally named <strong>MonoOS</strong>. The name was later changed to <strong>OneOS</strong>, as MonoOS felt too corporate. OneOS was eventually renamed to <strong>VulcanOS</strong> because OneOS felt too generic.
+</p>
+
+<h3>How the Project Evolved</h3>
+
+<p>
+    During the OneOS era, the project was written mostly in C++. Over time, VulcanOS moved toward being primarily written in C.
+</p>
+
+<p>
+    Throughout its development, VulcanOS reached several important milestones, including its early kernel development, first successful boots, filesystem and VFS development, working init systems, and desktop environment support. These milestones helped shape VulcanOS from an experiment into the hobbyist operating system it is today.
+</p>
+
+<p>
+    The project continues to evolve as an experimental x86_64 operating system.
+</p>
+
+<p>
+    <a href="#thing-1">Back to the beginning</a>
+</p>
+
+</section>
+
+        <section id="Credits">
+            <h2>6. Credits</h2>
+
+<p>
+    VulcanOS was originally created by <strong>dudas131</strong> as an experimental and hobbyist x86_64 operating system project.
+</p>
+
+<h3>Inspiration</h3>
+
+<p>
+    VulcanOS is inspired by <strong>OpenBSD</strong>, particularly its focus on security, as well as <strong>BoredOS</strong>.
+</p>
+
+<h3>Special Thanks</h3>
+
+<ul>
+    <li><strong>Rafa</strong> — Created the filesystem (FS) and virtual filesystem (VFS) components.</li>
+    <li><strong>Murilos</strong> — Helped make several init systems workable.</li>
+    <li><strong>Twister</strong> — Tester and project supporter.</li>
+    <li><strong>Leo</strong> — Tester and project supporter.</li>
+</ul>
+
+<p>
+    A special thanks to everyone who has tested, contributed to, or supported VulcanOS along the way.
+</p>
+
+<p>
+    Thanks for checking out VulcanOS!
+</p>
+
+<br><br>
+<p>
+    <a href="#thing-1">Back to the beginning</a>
+</p>
+
+
+
+
+    </main>
+
+    <footer>
+        <div>VulcanOS Wiki</div>
+
+        <div class="footer-links">
+<a href="#about">About</a>
+<a href="#Development">Development</a>
+<a href="https://github.com/dudzproductions101-ops/VulcanOS">GitHub</a>
+<a href="https://discord.com/invite/B2KFTCASUw">Discord</a>
+
+        </div>
+    </footer>
+
+</div>
+
+<script>
+    function choose(button, message) {
+        document.querySelectorAll(".choice").forEach(function(item) {
+            item.classList.remove("active");
+        });
+
+        button.classList.add("active");
+        document.getElementById("choice-result").textContent = message;
+    }
+
+    function toggleTheme() {
+        document.body.classList.toggle("light");
+
+        const button = document.querySelector(".theme-button");
+        const icon = button.querySelector("svg");
+        const text = button.querySelector("span");
+
+        if (document.body.classList.contains("light")) {
+            text.textContent = "Dark";
+
+            icon.innerHTML = `
+                <path d="M21 12.8A8.5 8.5 0 1 1 11.2 3A6.5 6.5 0 0 0 21 12.8z"/>
+            `;
+        } else {
+            text.textContent = "Light";
+
+            icon.innerHTML = `
+                <circle cx="12" cy="12" r="4"/>
+                <path d="M12 2v2"/>
+                <path d="M12 20v2"/>
+                <path d="M4.93 4.93l1.41 1.41"/>
+                <path d="M17.66 17.66l1.41 1.41"/>
+                <path d="M2 12h2"/>
+                <path d="M20 12h2"/>
+                <path d="M4.93 19.07l1.41-1.41"/>
+                <path d="M17.66 6.34l1.41-1.41"/>
+            `;
+        }
+    }
+</script>
+
+</body>
+</html>
